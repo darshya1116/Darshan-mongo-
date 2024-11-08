@@ -1,0 +1,133 @@
+NAME: BONDE ISHA SURESH
+ROLL NO:. 13117
+BATCH: A1
+
+
+
+Please enter a MongoDB connection string (Default: mongodb://localhost/): mongo
+mongo
+Current Mongosh Log ID: 6707a341b745dd148ee2c2ce
+Connecting to:          mongodb://127.0.0.1:27017/mongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.1
+Using MongoDB:          7.0.2
+Using Mongosh:          2.0.1
+mongosh 2.3.2 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-10-10T14:17:49.831+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+mongo> // Switch to the database 'ishaa2' (creates it if it doesn't exist)
+
+mongo> use ishaa2;
+switched to db ishaa2
+ishaa2>
+
+ishaa2> // Create a new collection 'sales'
+
+ishaa2> db.createCollection('sales');
+{ ok: 1 }
+ishaa2>
+
+ishaa2> // Insert sample sales records
+
+ishaa2> db.sales.insertMany([
+...     { "item": "apple", "amount": 10 },
+...     { "item": "banana", "amount": 20 },
+...     { "item": "apple", "amount": 30 },
+...     { "item": "orange", "amount": 25 },
+...     { "item": "banana", "amount": 15 }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6707a345b745dd148ee2c2cf"),
+    '1': ObjectId("6707a345b745dd148ee2c2d0"),
+    '2': ObjectId("6707a345b745dd148ee2c2d1"),
+    '3': ObjectId("6707a345b745dd148ee2c2d2"),
+    '4': ObjectId("6707a345b745dd148ee2c2d3")
+  }
+}
+ishaa2>
+
+ishaa2> // Verify the inserted records
+
+ishaa2> print("Inserted Sales Records:");
+Inserted Sales Records:
+
+ishaa2> db.sales.find().pretty();
+[
+  {
+    _id: ObjectId("6707a345b745dd148ee2c2cf"),
+    item: 'apple',
+    amount: 10
+  },
+  {
+    _id: ObjectId("6707a345b745dd148ee2c2d0"),
+    item: 'banana',
+    amount: 20
+  },
+  {
+    _id: ObjectId("6707a345b745dd148ee2c2d1"),
+    item: 'apple',
+    amount: 30
+  },
+  {
+    _id: ObjectId("6707a345b745dd148ee2c2d2"),
+    item: 'orange',
+    amount: 25
+  },
+  {
+    _id: ObjectId("6707a345b745dd148ee2c2d3"),
+    item: 'banana',
+    amount: 15
+  }
+]
+ishaa2>
+
+ishaa2> // Define the map function
+
+ishaa2> var mapFunction = function() {
+...     emit(this.item, this.amount);
+... };
+
+ishaa2>
+
+ishaa2> // Define the reduce function
+
+ishaa2> var reduceFunction = function(keyItem, values) {
+...     return Array.sum(values);
+... };
+
+ishaa2>
+
+ishaa2> // Execute the MapReduce operation
+
+ishaa2> db.sales.mapReduce(
+...     mapFunction,
+...     reduceFunction,
+...     { out: "totalSales" }
+... );
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+See https://docs.mongodb.com/manual/core/map-reduce for details.
+{ result: 'totalSales', ok: 1 }
+ishaa2>
+
+ishaa2> // Check the results of the MapReduce operation
+
+ishaa2> print("Total Sales Results:");
+Total Sales Results:
+
+ishaa2> db.totalSales.find().pretty();
+[
+  { _id: 'banana', value: 35 },
+  { _id: 'apple', value: 40 },
+  { _id: 'orange', value: 25 }
+]
+ishaa2>
+
+
+
+

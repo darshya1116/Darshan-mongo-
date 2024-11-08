@@ -1,0 +1,288 @@
+Please enter a MongoDB connection string (Default: mongodb://localhost/): mongo
+mongo
+Current Mongosh Log ID: 6707a801ddcd4a714481bea3
+Connecting to:          mongodb://127.0.0.1:27017/mongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.1
+Using MongoDB:          7.0.2
+Using Mongosh:          2.0.1
+mongosh 2.3.2 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-10-10T14:17:49.831+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+mongo> // Switch to the database 'isha' (creates it if it doesn't exist)
+
+mongo> use isha;
+switched to db isha
+isha>
+
+isha> // Create a new collection 'Student'
+
+isha> db.createCollection('Student');
+{ ok: 1 }
+isha>
+
+isha> // Insert new student records
+
+isha> db.Student.insertMany([
+...     { 'Rno': '13117', 'Name': 'Isha', 'Class': 'TE COMP' },
+...     { 'Rno': '13111', 'Name': 'Darshan', 'Class': 'TE COMP' },
+...     { 'Rno': '13107', 'Name': 'Priya', 'Class': 'TE COMP' },
+...     { 'Rno': '13113', 'Name': 'Tanmay', 'Class': 'TE COMP' },
+...     { 'Rno': '13114', 'Name': 'Rushi', 'Class': 'TE COMP' }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6707a814ddcd4a714481bea4"),
+    '1': ObjectId("6707a814ddcd4a714481bea5"),
+    '2': ObjectId("6707a814ddcd4a714481bea6"),
+    '3': ObjectId("6707a814ddcd4a714481bea7"),
+    '4': ObjectId("6707a814ddcd4a714481bea8")
+  }
+}
+isha>
+
+isha> // Find and display the inserted records
+
+isha> print("Inserted Records:");
+Inserted Records:
+
+isha> db.Student.find().pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea6"),
+    Rno: '13107',
+    Name: 'Priya',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea7"),
+    Rno: '13113',
+    Name: 'Tanmay',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea8"),
+    Rno: '13114',
+    Name: 'Rushi',
+    Class: 'TE COMP'
+  }
+]
+isha>
+
+isha> // Update a record (e.g., change 'Tanmay' to 'Tanvi')
+
+isha> db.Student.updateOne(
+...     { 'Name': 'Tanmay' },
+...     { $set: { 'Name': 'Tanvi' } }
+... );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+isha>
+
+isha> // Find and display records after update
+
+isha> print("Records after update:");
+Records after update:
+
+isha> db.Student.find().pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea6"),
+    Rno: '13107',
+    Name: 'Priya',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea7"),
+    Rno: '13113',
+    Name: 'Tanvi',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea8"),
+    Rno: '13114',
+    Name: 'Rushi',
+    Class: 'TE COMP'
+  }
+]
+isha>
+
+isha> // Delete a record (e.g., delete the record for 'Priya')
+
+isha> db.Student.deleteOne({ 'Name': 'Priya' });
+{ acknowledged: true, deletedCount: 1 }
+isha>
+
+isha> // Find and display records after deletion
+
+isha> print("Records after deletion:");
+Records after deletion:
+
+isha> db.Student.find().pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea7"),
+    Rno: '13113',
+    Name: 'Tanvi',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea8"),
+    Rno: '13114',
+    Name: 'Rushi',
+    Class: 'TE COMP'
+  }
+]
+isha>
+
+isha> // Using logical operators: Find students with Rno greater than '13110'
+
+isha> print("Students with Rno > 13110:");
+Students with Rno > 13110:
+
+isha> db.Student.find({ 'Rno': { $gt: '13110' } }).pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea7"),
+    Rno: '13113',
+    Name: 'Tanvi',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea8"),
+    Rno: '13114',
+    Name: 'Rushi',
+    Class: 'TE COMP'
+  }
+]
+isha>
+
+isha> // Find students with specific names
+
+isha> print("Students with Name 'Isha' or 'Darshan':");
+Students with Name 'Isha' or 'Darshan':
+
+isha> db.Student.find({ $or: [{ 'Name': 'Isha' }, { 'Name': 'Darshan' }] }).pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  }
+]
+isha>
+
+isha> // Save method (insert or update)
+
+isha> db.Student.updateOne(
+...     { 'Rno': '13114' },  // Filter
+...     { $set: { 'Name': 'Updated Rushi' } },  // Update
+...     { upsert: true }  // Create if doesn't exist
+... );
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+isha>
+
+isha> // Display records after saving
+
+isha> print("Records after save operation:");
+Records after save operation:
+
+isha> db.Student.find().pretty();
+[
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea4"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea5"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea7"),
+    Rno: '13113',
+    Name: 'Tanvi',
+    Class: 'TE COMP'
+  },
+  {
+    _id: ObjectId("6707a814ddcd4a714481bea8"),
+    Rno: '13114',
+    Name: 'Updated Rushi',
+    Class: 'TE COMP'
+  }
+]
+isha>

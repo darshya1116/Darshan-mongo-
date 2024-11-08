@@ -1,0 +1,138 @@
+NAME: BONDE ISHA SURESH
+ROLL NO.: 13117
+BATCH: A1
+
+
+Please enter a MongoDB connection string (Default: mongodb://localhost/): mongo
+mongo
+Current Mongosh Log ID: 6707a9f4a3bc4258e2cf853e
+Connecting to:          mongodb://127.0.0.1:27017/mongo?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.1
+Using MongoDB:          7.0.2
+Using Mongosh:          2.0.1
+mongosh 2.3.2 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-10-10T14:17:49.831+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+mongo> // Switch to the database 'ishaa' (creates it if it doesn't exist)
+
+mongo> use ishaa;
+switched to db ishaa
+ishaa>
+
+ishaa> // Create a new collection 'Student'
+
+ishaa> db.createCollection('Student');
+{ ok: 1 }
+ishaa>
+
+ishaa> // Insert sample student records
+
+ishaa> db.Student.insertMany([
+...     { "Rno": "13117", "Name": "Isha", "Class": "TE COMP", "Score": 85 },
+...     { "Rno": "13111", "Name": "Darshan", "Class": "TE COMP", "Score": 90 },
+...     { "Rno": "13107", "Name": "Priya", "Class": "TE COMP", "Score": 75 },
+...     { "Rno": "13113", "Name": "Tanvi", "Class": "TE COMP", "Score": 95 },
+...     { "Rno": "13114", "Name": "Rushi", "Class": "TE COMP", "Score": 80 }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("6707aa0ca3bc4258e2cf853f"),
+    '1': ObjectId("6707aa0ca3bc4258e2cf8540"),
+    '2': ObjectId("6707aa0ca3bc4258e2cf8541"),
+    '3': ObjectId("6707aa0ca3bc4258e2cf8542"),
+    '4': ObjectId("6707aa0ca3bc4258e2cf8543")
+  }
+}
+ishaa>
+
+ishaa> // Verify the inserted records
+
+ishaa> print("Inserted Records:");
+Inserted Records:
+
+ishaa> db.Student.find().pretty();
+[
+  {
+    _id: ObjectId("6707aa0ca3bc4258e2cf853f"),
+    Rno: '13117',
+    Name: 'Isha',
+    Class: 'TE COMP',
+    Score: 85
+  },
+  {
+    _id: ObjectId("6707aa0ca3bc4258e2cf8540"),
+    Rno: '13111',
+    Name: 'Darshan',
+    Class: 'TE COMP',
+    Score: 90
+  },
+  {
+    _id: ObjectId("6707aa0ca3bc4258e2cf8541"),
+    Rno: '13107',
+    Name: 'Priya',
+    Class: 'TE COMP',
+    Score: 75
+  },
+  {
+    _id: ObjectId("6707aa0ca3bc4258e2cf8542"),
+    Rno: '13113',
+    Name: 'Tanvi',
+    Class: 'TE COMP',
+    Score: 95
+  },
+  {
+    _id: ObjectId("6707aa0ca3bc4258e2cf8543"),
+    Rno: '13114',
+    Name: 'Rushi',
+    Class: 'TE COMP',
+    Score: 80
+  }
+]
+ishaa>
+
+ishaa> // Create an index on the 'Rno' field for faster searches
+
+ishaa> db.Student.createIndex({ Rno: 1 });
+Rno_1
+ishaa>
+
+ishaa> // Aggregation: Calculate the average score of students in 'TE COMP'
+
+ishaa> print("Average Score of TE COMP Students:");
+Average Score of TE COMP Students:
+
+ishaa> db.Student.aggregate([
+...     { $match: { Class: 'TE COMP' } }, // Filter for TE COMP class
+...     { $group: { _id: null, averageScore: { $avg: "$Score" } } } // Calculate average score
+... ]);
+[ { _id: null, averageScore: 85 } ]
+ishaa>
+
+ishaa> // Aggregation: Find students with scores above 80 and calculate their average, minimum, and maximum scores
+
+ishaa> print("Scores of Students with Scores Above 80:");
+Scores of Students with Scores Above 80:
+
+ishaa> db.Student.aggregate([
+...     { $match: { Score: { $gt: 80 } } }, // Filter for scores greater than 80
+...     {
+...         $group: {
+...             _id: null,
+...             averageScore: { $avg: "$Score" }, // Calculate average
+...             minScore: { $min: "$Score" },     // Calculate minimum
+...             maxScore: { $max: "$Score" }      // Calculate maximum
+...         }
+...     }
+... ]);
+[ { _id: null, averageScore: 90, minScore: 85, maxScore: 95 } ]
+ishaa>
+
+
+
+
